@@ -1,0 +1,28 @@
+#include <iostream>
+using namespace std;
+int main() {
+    string s;
+    cin >> s;
+    bool lower[26] = {false};
+    bool upper[26] = {false};
+    for (char ch : s) {
+        if (ch >= 'a' && ch <= 'z') {
+            lower[ch - 'a'] = true;
+        }
+        else if (ch >= 'A' && ch <= 'Z') {
+            upper[ch - 'A'] = true;
+        }
+    }
+    bool allPresent = true;
+    for (int i = 0; i < 26; i++) {
+        if (lower[i] == false || upper[i] == false) {
+            allPresent = false;
+            break;
+        }
+    }
+    if (allPresent)
+        cout << "Yes";
+    else
+        cout << "No";
+    return 0;
+}

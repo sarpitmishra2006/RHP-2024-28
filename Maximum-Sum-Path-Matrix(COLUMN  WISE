@@ -1,0 +1,51 @@
+import java.util.*;
+
+class Main {
+    public static void main(String args[]) {
+        Scanner sc = new Scanner(System.in);
+
+        int rows = sc.nextInt();
+        int cols = sc.nextInt();
+
+        int matrix[][] = new int[rows][cols];
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                matrix[i][j] = sc.nextInt();
+            }
+        }
+
+        int dp[] = new int[rows];
+
+        // Initialize with first column
+        for (int i = 0; i < rows; i++) {
+            dp[i] = matrix[i][0];
+        }
+
+        // Process remaining columns
+        for (int col = 1; col < cols; col++) {
+            int newDp[] = new int[rows];
+
+            for (int row = 0; row < rows; row++) {
+                int best = Integer.MIN_VALUE;
+
+                for (int prevRow = 0; prevRow < rows; prevRow++) {
+                    if (prevRow != row) {
+                        best = Math.max(best, dp[prevRow] + matrix[row][col]);
+                    }
+                }
+
+                newDp[row] = best;
+            }
+
+            dp = newDp;
+        }
+
+        int ans = Integer.MIN_VALUE;
+        for (int val : dp) {
+            ans = Math.max(ans, val);
+        }
+
+        System.out.println(ans);
+    }
+}

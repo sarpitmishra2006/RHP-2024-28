@@ -1,0 +1,23 @@
+
+import java.util.*;
+public class Main{
+  public static void main(String[] args){
+    Scanner sc = new Scanner(System.in);
+    int w=sc.nextInt();
+    int t=sc.nextInt();
+    int pref[] = new int[w+2];
+    while(t-->0){
+      int lt,rt;
+      lt=sc.nextInt();
+      rt=sc.nextInt();
+      pref[lt]++;
+      pref[rt+1]--;
+    }
+    int ans=200001;
+    for(int i=1;i<=w;i++){
+      pref[i]+=pref[i-1];
+      ans = Math.min(ans,pref[i]);
+    }
+    System.out.println(ans);
+  }
+}

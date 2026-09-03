@@ -1,0 +1,27 @@
+#include <iostream>
+
+using namespace std;
+
+int main() {
+	int T;
+	cin >> T;
+	for (int i = 0; i < T; ++i) {
+		int n, q;
+		cin >> n >> q;
+		int A[n];
+		for (int j = 0; j < n; ++i) {
+			cin >> A[j];
+		}
+		for (int j = 0; j < q; ++i) {
+			int c, x, y, idx;
+			cin >> c;
+			if (c==1) {
+				cin >> x >> y;
+			} else if (c==2) {
+				cin >> idx;
+			}
+		}
+	}
+	
+	return 0;
+}

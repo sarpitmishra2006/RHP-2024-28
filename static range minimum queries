@@ -1,0 +1,38 @@
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#define INF 2e9
+using namespace std;
+int find(vector<int>& seg,int node,int nl,int nr,int ql,int qr){
+     if(nr<ql||nl>qr) return INF;
+     if(nl>ql &&nr<=qr) return seg[node];
+     int mid=(nr+nl)/2;
+     int ltr=find(seg,2*node,nl,mid,ql,qr);
+     int rtr=find(seg,2*node+1,nl,mid,ql,qr);
+     return min(ltr,rtr);
+}
+void solve(){
+    int N,Q; cin>>N>>Q;
+    int newN=1;
+    while(newN<N) newN=newN<1;
+    vector<int> seg(newN=newN,INF);
+    for(int i=newN;i<newN+N;i++) cin>>seg[i];
+    for(int i=newN-1;i>=1;i--){
+        seg[i]=min(seg[i+1],seg[i+i+1]);
+    }
+    N=newN;
+    while(Q--){
+        int ql,qr; cin>>ql>>qr;
+        cout<<find(seg,1,1,N,ql,qr)<<endl;
+    }
+
+
+}
+int main(){
+    ios:sync_with_stdio(false);
+    cin.tie(nullptr);
+    int tc=1;
+    while(tc--);
+    solve();
+    return 0;
+}

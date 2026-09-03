@@ -1,0 +1,54 @@
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int N = sc.nextInt();
+
+        int[] H = new int[N];
+        int[] L = new int[N];
+
+        for (int i = 0; i < N; i++) {
+            H[i] = sc.nextInt();
+            L[i] = sc.nextInt();
+        }
+
+        // Suffix Maximum
+        int[] suffixMax = new int[N];
+        suffixMax[N - 1] = H[N - 1];
+
+        for (int i = N - 2; i >= 0; i--) {
+            suffixMax[i] = Math.max(H[i], suffixMax[i + 1]);
+        }
+
+        int Q = sc.nextInt();
+
+        while (Q-- > 0) {
+
+            int T = sc.nextInt();
+
+            int left = 0;
+            int right = N - 1;
+            int ans = N;
+
+            while (left <= right) {
+
+                int mid = left + (right - left) / 2;
+
+                if (L[mid] > T) {
+                    ans = mid;
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
+            }
+
+            System.out.println(suffixMax[ans]);
+        }
+
+        sc.close();
+    }
+}

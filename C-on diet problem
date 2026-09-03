@@ -1,0 +1,41 @@
+import java.util.*;
+
+public class Main{
+    public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
+
+        int n=sc.nextInt();
+        int m=sc.nextInt();
+        long k=sc.nextLong();
+
+        long[] a=new long[n+1];
+        for(int i=1;i<=n;i++){
+            a[i]=sc.nextLong();
+        }
+
+        boolean[] ate=new boolean[n+1];
+        long[] eatenCal=new long[n+1];
+        long currentWindowSum=0;
+
+        for(int i=1;i<=n;i++){
+            if(i-m>=1){
+                currentWindowSum-=eatenCal[i-m];
+            }
+
+            if(currentWindowSum+a[i]<=k){
+                ate[i]=true;
+                eatenCal[i]=a[i];
+                currentWindowSum+=a[i];
+            }else{
+                ate[i]=false;
+                eatenCal[i]=0;
+            }
+        }
+
+        for(int i=1;i<=n;i++){
+            System.out.println(ate[i]?"Yes":"No");
+        }
+
+        sc.close();
+    }
+}

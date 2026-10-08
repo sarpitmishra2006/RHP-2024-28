@@ -1,0 +1,114 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+int M,N;
+cin>>M>>N;
+vector<string> grid(M,string(N,'0'));
+vector<pair<int,int>> start,dest;
+//take input in grid and thus check for s&S and push their position to the start and the destination
+
+for(int i=0;i<M;i++){
+for(int j=0;j<N;j++){
+cin>>grid[i][j];
+if(grid[i][j]=='s'){
+start.push_back({i,j});
+}
+if(grid[i][j]=='S'){
+dest.push_back({i,j});
+}
+}}
+//find r,c,orientation : 0-horizontal,1-vertical
+
+auto getState=[](vector<pair<int,int>> cells){
+sort(cells.begin(),cells.end());
+int r=cells[0].first;
+int c=cells[0].second;
+int orientation=(cells[0].first == cells[1].first)?0:1;
+return make_tuple(r,c,orientation);
+};
+auto [sr,sc,so]=getState(start);
+auto [tr,tc,to]=getState(dest);
+
+//whether sofa can move or not
+auto valid=[&](int r,int c,int o){
+if(r<0||c<0||r>=M||c>=N){
+return false;
+}
+if(grid[r][c]=='H'){
+return false;}
+if(o==0){
+if(c+1>=N||grid[r][c+1]=='H'){
+return false;}
+}else{
+if(r+1>=M||grid[r+1][c]=='H'){
+return false;}}
+return true;
+
+};
+
+//check whether sofa rotation can be happen or not
+
+auto freeSquare=[&](int r,int c){
+if(r<0||c<0||r+1>=M||c+1>=N){
+return false;}
+for(int i=r;i<=r+1;i++){
+for(int j=c;j<=c+1;j++){
+if(grid[i][j]=='H'){
+return false;}
+}}
+return true;
+
+};
+
+//create a dist to store number of distance to reach dest
+
+vector<vector<vector<int>>> dist(M,vector<vector<int>>(N,vector<int>(2,-1)));
+//create a new queue
+queue <tuple<int,int,int>> q;
+q.push({sr,sc,so});
+dist[sr][sc][so]=0;
+//explore the move first continue,then take from first state of queue then pop it and then count the states
+
+while(!q.empty()){
+auto[r,c,o]=q.front();
+q.pop();
+int steps=dist[r][c][o];
+//check whether it reached the target or not
+if(r==tr&&c==tc&&o==to){
+cout<<steps<<"\n";
+return 0;}
+//move cell up,down,left,right
+int dr[]={-1,1,0,0};
+int dc[]={0,0,-1,1};
+for(int k=0;k<4;k++){
+int nr=r+dr[k];
+int nc=c+dc[k];
+if(valid(nr,nc,o)&&dist[nr][nc][o]==-1){
+dist[nr][nc][o]=steps+1;
+q.push({nr,nc,o});
+}
+}
+//coming with here rotating with sofa
+if(o==0){
+for(int rr:{r-1,r}){
+if (freeSquare(rr,c)){
+for(int cc:{c,c+1}){
+if(dist[rr][cc][1]==-1){
+dist[rr][cc][1]=steps+1;
+q.push({rr,cc,1});
+}}}
+}}else{
+for(int cc:{c-1,c}){
+if (freeSquare(r,cc)){
+for(int rr:{r,r+1}){
+if(dist[rr][cc][0]==-1){
+dist[rr][cc][0]=steps+1;
+q.push({rr,cc,0});
+}}}
+}}
+}
+cout<<"Impossible"<<"\n";
+return 0;
+}
+
+
